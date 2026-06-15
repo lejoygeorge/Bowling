@@ -31,4 +31,10 @@ class TenPinScoringServiceTest {
     void testPairsOfOneAndMissWithSpace() {
         assertEquals(10, service.calculateScore("1- 1- 1- 1- 1- 1- 1- 1- 1- 1-"));
     }
+
+    @Test
+    @DisplayName("One Spare then misses should score 16")
+    void testOneSpareAndThenAllMisses() {
+        assertEquals(16, service.calculateScore("5/ 3- -- -- -- -- -- -- -- --"));
+    }
 }
