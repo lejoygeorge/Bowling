@@ -121,6 +121,35 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>org.pitest</groupId>
+				<artifactId>pitest-maven</artifactId>
+				<version>1.19.1</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.pitest</groupId>
+						<artifactId>pitest-junit5-plugin</artifactId>
+						<version>1.2.1</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<parseSurefireArgLine>false</parseSurefireArgLine>
+					<targetClasses>
+						<param>com.bnpp.bowling.*</param>
+					</targetClasses>
+					<targetTests>
+						<param>com.bnpp.bowling.*</param>
+					</targetTests>
+					<jvmArgs>
+						<param>-XX:+EnableDynamicAgentLoading</param>
+						<param>-Xmx1024m</param>
+					</jvmArgs>
+					<threads>4</threads>
+					<excludedClasses>
+						<param>com.bnpp.bowling.BowlingApplication</param>
+					</excludedClasses>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
