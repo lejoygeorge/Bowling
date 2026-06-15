@@ -37,4 +37,10 @@ class TenPinScoringServiceTest {
     void testOneSpareAndThenAllMisses() {
         assertEquals(16, service.calculateScore("5/ 3- -- -- -- -- -- -- -- --"));
     }
+
+    @Test
+    @DisplayName("All Spares with a final 5 should score 150")
+    void testAllSpareWithFinalFive() {
+        assertEquals(150, service.calculateScore("5/ 5/ 5/ 5/ 5/ 5/ 5/ 5/ 5/ 5/5"));
+    }
 }
