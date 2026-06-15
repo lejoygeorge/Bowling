@@ -1,35 +1,42 @@
 package com.bnpp.bowling.service;
 
-public class TenPinScoringService {
+import com.bnpp.bowling.parser.SequenceParser;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import static com.bnpp.bowling.constants.BowlingConstants.*;
+@Service
+@RequiredArgsConstructor
+public class TenPinScoringService implements BowlingScoringService{
+
+    private final SequenceParser parser;
 
     public int calculateScore(String sequence) {
-        String cleanSequence = sequence.replaceAll("\\s+", "");
-        int[] rolls = parseSequence(cleanSequence);
+        var parsedSequence = parser.parse(sequence);
+        var rolls = parsedSequence.rolls();
         int score = 0;
         int rollIndex = 0;
-        for (int frame = 0; frame < 10; frame++) {
-            if (rolls[rollIndex] + rolls[rollIndex + 1] == 10) {
-                score += 10 + rolls[rollIndex + 2];
-                rollIndex += 2;
+        for (int frame = 0; frame < FRAMESIZE; frame++) {
+            if (isSpare(rolls, rollIndex)) {
+                score += MAXPOINT + spareBonus(rolls, rollIndex);
+                rollIndex += TWOROLL;
             } else {
-                score += rolls[rollIndex] + rolls[rollIndex + 1];
-                rollIndex += 2;
+                score += sumOfPinsInFrame(rolls, rollIndex);
+                rollIndex += TWOROLL;
             }
         }
         return score;
     }
 
-    private int[] parseSequence(String seq) {
-        int[] rolls = new int[seq.length()];
+    private boolean isSpare(int[] rolls, int rollIndex) {
+        return rolls[rollIndex] + rolls[rollIndex + 1] == 10;
+    }
 
-        for (int i = 0; i < seq.length(); i++) {
-            char c = seq.charAt(i);
-            rolls[i] = switch (c) {
-                case '/' -> 10 - rolls[i - 1];
-                case '-' -> 0;
-                default -> Character.getNumericValue(c);
-            };
-        }
-        return rolls;
+    private int spareBonus(int[] rolls, int rollIndex) {
+        return rolls[rollIndex + 2];
+    }
+
+    private int sumOfPinsInFrame(int[] rolls, int rollIndex) {
+        return rolls[rollIndex] + rolls[rollIndex + 1];
     }
 }
