@@ -3,7 +3,8 @@ package com.bnpp.bowling.service;
 public class TenPinScoringService {
 
     public int calculateScore(String sequence) {
-        int[] rolls = parseSequence(sequence);
+        String cleanSequence = sequence.replaceAll("\\s+", "");
+        int[] rolls = parseSequence(cleanSequence);
         int score = 0;
         int rollIndex = 0;
         for (int frame = 0; frame < 10; frame++) {
