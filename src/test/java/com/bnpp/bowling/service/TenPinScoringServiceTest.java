@@ -1,5 +1,7 @@
 package com.bnpp.bowling.service;
 
+import com.bnpp.bowling.calculator.ScoreCalculator;
+import com.bnpp.bowling.calculator.TenPinScoreCalculator;
 import com.bnpp.bowling.parser.SequenceParser;
 import com.bnpp.bowling.parser.StringCharSequenceParser;
 import org.junit.jupiter.api.DisplayName;
@@ -11,7 +13,9 @@ class TenPinScoringServiceTest {
 
     private SequenceParser parser = new StringCharSequenceParser();
 
-    private TenPinScoringService scoringService = new TenPinScoringService(parser);
+    private ScoreCalculator calculator = new TenPinScoreCalculator();
+
+    private TenPinScoringService scoringService = new TenPinScoringService(parser, calculator);
 
     @Test
     @DisplayName("Gutter game should score 0")
